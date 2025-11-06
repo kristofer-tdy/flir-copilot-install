@@ -89,7 +89,7 @@
             `;
         } else {
             const protocol = insiders ? 'vscode-insiders' : 'vscode';
-            const vscodeUrl = `${protocol}://vscode.chat-instructions/install?url=${encodeURIComponent(targetUrl)}`;
+            const vscodeUrl = `${protocol}://chat-instructions/install?url=${encodeURIComponent(targetUrl)}`;
             const manualLink = document.getElementById('manual-link');
             manualLink.href = vscodeUrl;
             manualLink.textContent = `Open in ${insiders ? 'VS Code Insiders' : 'VS Code'}`;
