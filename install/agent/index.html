@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installing Agent...</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            max-width: 500px;
+        }
+        h1 {
+            margin: 0 0 1rem 0;
+            font-size: 1.75rem;
+        }
+        p {
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 2rem auto;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .manual-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        .manual-link:hover {
+            transform: translateY(-2px);
+        }
+        .error {
+            display: none;
+            color: #ffcccc;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Installing Agent</h1>
+        <div class="spinner"></div>
+        <p>Opening VS Code...</p>
+        <p class="error" id="error">If VS Code doesn't open automatically, click the button below.</p>
+        <a href="#" id="manual-link" class="manual-link" style="display: none;">Open in VS Code</a>
+        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.7;">
+            Make sure VS Code is installed on your computer.
+        </p>
+    </div>
+    
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const targetUrl = params.get('url');
+        const insiders = params.get('insiders') === 'true';
+        
+        if (!targetUrl) {
+            document.querySelector('.container').innerHTML = `
+                <h1>❌ Error</h1>
+                <p>Missing URL parameter</p>
+                <p style="font-size: 0.9rem; opacity: 0.7;">Please use the install links from the repository.</p>
+            `;
+        } else {
+            const protocol = insiders ? 'vscode-insiders' : 'vscode';
+            const vscodeUrl = `${protocol}://vscode.chat-agent/install?url=${encodeURIComponent(targetUrl)}`;
+            const manualLink = document.getElementById('manual-link');
+            manualLink.href = vscodeUrl;
+            manualLink.textContent = `Open in ${insiders ? 'VS Code Insiders' : 'VS Code'}`;
+            
+            window.location.href = vscodeUrl;
+            
+            setTimeout(() => {
+                document.getElementById('error').style.display = 'block';
+                manualLink.style.display = 'inline-block';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
